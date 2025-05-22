@@ -56,7 +56,7 @@ class BlockGame2 {
 
         }
 
-        static class MyPanel extends JPanel { // VANAVAS for Draw!
+        static class MyPanel extends JPanel { // CANAVAS for Draw!    
             public MyPanel() {
                 this.setSize(CANVAS_WIDTH, CANVAS_HEIGHT);
                 this.setBackground(Color.BLACK);
@@ -107,6 +107,7 @@ class BlockGame2 {
             this.setLocation(400, 300);
             this.setLayout(new BorderLayout());
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            this.setResizable(false);
 
             initData();
 
@@ -142,6 +143,8 @@ class BlockGame2 {
                 @Override
                 public void keyPressed(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+
+                        System.out.println("pressed Left Key");
 
                     if (bar.x - 20 >= 0) {
 
