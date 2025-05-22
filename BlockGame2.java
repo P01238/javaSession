@@ -38,6 +38,26 @@ class BlockGame2 {
             int height = BALL_HEIGHT;
             int ballSpeedx = 5;
             int ballSpeedy = -5;
+
+            Point getCenter() {
+                return new Point(x + (BALL_WIDTH / 2), y + (BALL_HEIGHT / 2));
+            }// 김민서
+
+            Point getBottomCenter() {
+                return new Point(x + (BALL_WIDTH / 2), y + (BALL_HEIGHT));
+            }// 김민서
+
+            Point getTopCenter() {
+                return new Point(x + (BALL_WIDTH / 2), y);
+            }// 김민서
+
+            Point getLeftCenter() {
+                return new Point(x, y + (BALL_HEIGHT / 2));
+            }// 김민서
+
+            Point getRightCenter() {
+                return new Point(x + (BALL_WIDTH), y + (BALL_HEIGHT / 2));
+            }// 김민서
         }
 
         static class Bar {
@@ -102,7 +122,7 @@ class BlockGame2 {
                 if (isGameFinish) {
                     g2d.setColor(Color.RED);
                     g2d.drawString("Game Finished!", CANVAS_WIDTH / 2 - 55, 50);
-                } // 김민서 ㅇㅇ
+                } // 김민서
             }
         }
 
@@ -199,6 +219,10 @@ class BlockGame2 {
 
         }
 
+        public boolean duplRect(Rectangle rect1, Rectangle rect2) {
+            return rect1.intersects(rect2); // check two Rect is Duplicated!
+        }// 김민서
+
         void checkCollision() {
             // 위/아래 벽 충돌 → y축 반전
             if (ball.y <= 0 || ball.y >= CANVAS_HEIGHT - BALL_HEIGHT) {
@@ -208,6 +232,12 @@ class BlockGame2 {
             // 좌우 벽 충돌 → x축 반전
             if (ball.x <= 0 || ball.x >= CANVAS_WIDTH - BALL_WIDTH) {
                 ball.ballSpeedx *= -1;
+            }
+            if (ball.getBottomCenter().y >= bar.y) {
+                if (duplRect(new Rectangle(ball.x, ball.y, ball.width, ball.height),
+                        new Rectangle(bar.x, bar.y, bar.width, bar.height))) {
+                    dir = 2;// 김민서
+                }
             }
         }
 
