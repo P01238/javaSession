@@ -3,9 +3,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
-class BlockGame {
+class BlockGame2 {
     static class MyFrame extends JFrame {
 
         // constant
@@ -36,6 +35,8 @@ class BlockGame {
             int y = CANVAS_HEIGHT / 2 - BALL_HEIGHT / 2;
             int width = BALL_WIDTH;
             int height = BALL_HEIGHT;
+            int ballSpeedx = 5;
+            int ballSpeedy = -5;
         }
 
         static class Bar {
@@ -43,8 +44,6 @@ class BlockGame {
             int y = CANVAS_HEIGHT - 100;
             int width = BAR_WIDTH;
             int height = BAR_HEIGHT;
-            int ballSpeedx = 3;
-            int ballSpeedy = -3;
         }
 
         static class Block {
@@ -169,7 +168,6 @@ class BlockGame {
                 }
             });
             timer.start();
-            System.out.println("타이머 작동 중");
         }
 
         void movement() {
@@ -178,8 +176,8 @@ class BlockGame {
             } else if (bar.x > barXTarget) {
                 bar.x -= 5;
             }
-            ball.x += ballSpeedx;
-            ball.y -= ballSpeedy;
+            ball.x += ball.ballSpeedx;
+            ball.y -= ball.ballSpeedy;
 
         }
 
