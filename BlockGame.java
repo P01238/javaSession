@@ -240,7 +240,7 @@ public class BlockGame {
 
                         barXTarget += 20;
 
-                        if (bar.x < barXTarget) {
+                        if (bar.x > barXTarget) {
 
                             barXTarget = bar.x;
 
