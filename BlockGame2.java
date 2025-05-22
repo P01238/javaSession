@@ -102,7 +102,7 @@ class BlockGame2 {
                 if (isGameFinish) {
                     g2d.setColor(Color.RED);
                     g2d.drawString("Game Finished!", CANVAS_WIDTH / 2 - 55, 50);
-                } // 김민서
+                } // 김민서 ㅇㅇ
             }
         }
 
