@@ -57,7 +57,7 @@ class BlockGame2 {
 
         }
 
-        static class MyPanel extends JPanel { // CANAVAS for Draw!    
+        static class MyPanel extends JPanel { // CANAVAS for Draw!
             public MyPanel() {
                 this.setSize(CANVAS_WIDTH, CANVAS_HEIGHT);
                 this.setBackground(Color.BLACK);
@@ -99,10 +99,10 @@ class BlockGame2 {
                 // draw Bar
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(bar.x, bar.y, bar.width, bar.height);
-                if( isGameFinish ) {
-						g2d.setColor(Color.RED);
-						g2d.drawString("Game Finished!", CANVAS_WIDTH/2 - 55, 50);
-					}//김민서
+                if (isGameFinish) {
+                    g2d.setColor(Color.RED);
+                    g2d.drawString("Game Finished!", CANVAS_WIDTH / 2 - 55, 50);
+                } // 김민서
             }
         }
 
@@ -155,13 +155,12 @@ class BlockGame2 {
 
                         System.out.println("pressed Left Key");
 
-                    if (bar.x - 20 >= 0) {
+                        if (bar.x - 20 >= 0) {
 
-                        barXTarget = bar.x - 20;
+                            barXTarget = bar.x - 20;
 
-                    }
+                        }
 
-                        
                     } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 
                         System.out.println("pressed Right Key");
@@ -169,7 +168,7 @@ class BlockGame2 {
                         if (bar.x + BAR_WIDTH + 20 <= CANVAS_WIDTH) {
 
                             barXTarget = bar.x + 20;
-                            
+
                         }
                     }
                 }
