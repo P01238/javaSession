@@ -112,8 +112,12 @@ class BlockGame2 {
             initData();
 
             myPanel = new MyPanel();
-            this.add("Center", myPanel);
+            myPanel.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
+            this.add(myPanel, BorderLayout.CENTER);
 
+            this.pack();
+            this.setLocation(400, 300);
+            
             setKeyListener();
             startTimer();
 
