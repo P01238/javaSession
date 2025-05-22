@@ -29,6 +29,7 @@ class BlockGame2 {
         static Ball ball = new Ball();
         static int barXTarget = bar.x;
         static int dir = new Random().nextInt(4);
+        static boolean isGameFinish = false; // 김민서
 
         static class Ball {
             int x = CANVAS_WIDTH / 2 - BALL_WIDTH / 2;
@@ -98,6 +99,10 @@ class BlockGame2 {
                 // draw Bar
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(bar.x, bar.y, bar.width, bar.height);
+                if( isGameFinish ) {
+						g2d.setColor(Color.RED);
+						g2d.drawString("Game Finished!", CANVAS_WIDTH/2 - 55, 50);
+					}//김민서
             }
         }
 
