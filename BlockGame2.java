@@ -138,19 +138,26 @@ class BlockGame2 {
             myPanel.setFocusable(true);
             myPanel.requestFocusInWindow();
             myPanel.addKeyListener(new KeyAdapter() {
+
                 @Override
                 public void keyPressed(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                        System.out.println("pressed Left Key");
-                        barXTarget -= 20;
-                        if (bar.x < barXTarget) {
-                            barXTarget = bar.x;
-                        }
+
+                    if (bar.x - 20 >= 0) {
+
+                        barXTarget = bar.x - 20;
+
+                    }
+
+                        
                     } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+
                         System.out.println("pressed Right Key");
-                        barXTarget += 20;
-                        if (bar.x < barXTarget) {
-                            barXTarget = bar.x;
+
+                        if (bar.x + BAR_WIDTH + 20 <= CANVAS_WIDTH) {
+
+                            barXTarget = bar.x + 20;
+                            
                         }
                     }
                 }
