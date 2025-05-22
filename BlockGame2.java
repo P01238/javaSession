@@ -8,8 +8,8 @@ class BlockGame2 {
     static class MyFrame extends JFrame {
 
         // constant
-        static int BALL_WIDTH = 20;
-        static int BALL_HEIGHT = 20;
+        static int BALL_WIDTH = 15; // 값 변경
+        static int BALL_HEIGHT = 15; // 값 변경
         static int BLOCK_ROWS = 5;
         static int BLOCK_COLUMNS = 10;
         static int BLOCK_WIDTH = 40;
@@ -190,7 +190,7 @@ class BlockGame2 {
 
         void checkCollision() {
             // 위/아래 벽 충돌 → y축 반전
-            if (ball.y <= 0 || ball.y >= CANVAS_HEIGHT - BALL_HEIGHT) {
+            if (ball.y <= 0 || ball.y >= CANVAS_HEIGHT - 3*BALL_HEIGHT) { //3 곱함
                 ball.ballSpeedy *= -1;
             }
 
