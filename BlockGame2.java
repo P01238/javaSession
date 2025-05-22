@@ -122,7 +122,7 @@ class BlockGame2 {
 
             this.pack();
             this.setLocation(400, 300);
-            
+
             setKeyListener();
             startTimer();
 
@@ -202,7 +202,7 @@ class BlockGame2 {
 
         void checkCollision() {
             // 위/아래 벽 충돌 → y축 반전
-            if (ball.y <= 0 || ball.y >= CANVAS_HEIGHT - 3*BALL_HEIGHT) { //3 곱함
+            if (ball.y <= 0 || ball.y >= CANVAS_HEIGHT - BALL_HEIGHT) {
                 ball.ballSpeedy *= -1;
             }
 
