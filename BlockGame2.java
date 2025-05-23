@@ -30,6 +30,8 @@ class BlockGame2 {
         static int barXTarget = bar.x;
         static int dir = new Random().nextInt(4);
         static boolean isGameFinish = false; // 김민서
+        static boolean isLeftPressed = false;
+        static boolean isRightPressed = false;
 
         static class Ball {
             int x = CANVAS_WIDTH / 2 - BALL_WIDTH / 2;
@@ -172,6 +174,9 @@ class BlockGame2 {
                 @Override
                 public void keyPressed(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                        //키 버벅임 현상 방지
+                        isLeftPressed = true;
+                        isRightPressed = false;
 
                         System.out.println("pressed Left Key");
 
@@ -182,6 +187,9 @@ class BlockGame2 {
                         }
 
                     } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                        // 키 버벅임 현상 방지
+                        isRightPressed = true;
+                        isLeftPressed = false;
 
                         System.out.println("pressed Right Key");
 
@@ -190,6 +198,18 @@ class BlockGame2 {
                             barXTarget = bar.x + 20;
 
                         }
+                    }
+                }
+
+                // 키 헤제시 막대기 멈춤춤
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                        isLeftPressed = false;
+                        System.out.println("released Left Key");
+                    } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                        isRightPressed = false;
+                        System.out.println("released Right Key");
                     }
                 }
             });
@@ -235,10 +255,10 @@ class BlockGame2 {
         }
 
         void movement() {
-            if (bar.x < barXTarget) {
-                bar.x += 5;
-            } else if (bar.x > barXTarget) {
+            if (isLeftPressed && bar.x > 0) {
                 bar.x -= 5;
+            } else if (isRightPressed && bar.x + bar.width < CANVAS_WIDTH) {
+                bar.x += 5;
             }
             ball.x += ball.ballSpeedx;
             ball.y -= ball.ballSpeedy;
