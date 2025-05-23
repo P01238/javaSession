@@ -233,18 +233,49 @@ class BlockGame2 {
             if (ball.x <= 0 || ball.x >= CANVAS_WIDTH - BALL_WIDTH) {
                 ball.ballSpeedx *= -1;
             }
+
+            // 김민서 -> 막대기 충돌버젼에서 (김태현 수정) 오류사유 dir 사용( 현재 필요없는 부분)
             if (ball.getBottomCenter().y >= bar.y) {
                 if (duplRect(new Rectangle(ball.x, ball.y, ball.width, ball.height),
                         new Rectangle(bar.x, bar.y, bar.width, bar.height))) {
-                    dir = 2;// 김민서
+                    ball.ballSpeedy *= -1; // 변경전 dir = 2;
                 }
             }
+           
         }
 
         public void checkCollisionBlock() {
+            for (int i = 0; i < BLOCK_ROWS; i++) {
+                for (int j = 0; j < BLOCK_COLUMNS; j++) {
+                    Block block = blocks[i][j];
+
+                    if (block.isHidden) continue;
+
+                    Rectangle ballRect = new Rectangle(ball.x, ball.y, ball.width, ball.height);
+                    Rectangle blockRect = new Rectangle(block.x, block.y, block.width, block.height);
+
+                    if (duplRect(ballRect, blockRect)) {
+
+                        block.isHidden =true;
+                        
+                        int rowScore = (BLOCK_ROWS - i) * 10;
+                        score += rowScore;
+
+                        Rectangle intersection = ballRect.intersection(blockRect);
+                        if (intersection.width > intersection.height) {
+                            ball.ballSpeedy *= -1;
+                        } else{
+                            ball.ballSpeedx *= -1;
+                        }
+
+                        return;
+                        }
+                    }
+                }
+            }
 
         }
-    }
+    
 
     public static void main(String[] args) {
         System.out.println("main 시작됨");
