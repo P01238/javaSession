@@ -193,6 +193,32 @@ class BlockGame2 {
                     }
                 }
             });
+
+            // 마우스 클릭시 재시작
+            myPanel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (isGameFinish && SwingUtilities.isLeftMouseButton(e)) {
+                        restartGame();
+                    }
+                }
+            });
+        }
+        public void restartGame() {
+            isGameFinish = false;
+            score = 0; // 점수 초기화
+            initData(); // 블록 초기화
+
+            // 막대기 초기화
+            bar.x = CANVAS_WIDTH / 2 - BAR_WIDTH / 2; 
+            bar.y = CANVAS_HEIGHT - 100; 
+            barXTarget = bar.x;
+            // 공 초기화
+            ball.x = CANVAS_WIDTH / 2 - BALL_WIDTH / 2;
+            ball.y = CANVAS_HEIGHT / 2 - BALL_HEIGHT / 2;
+            ball.ballSpeedx = 5;
+            ball.ballSpeedy = -5;
+            timer.start();
         }
 
         public void startTimer() {
@@ -241,6 +267,10 @@ class BlockGame2 {
                     ball.ballSpeedy *= -1; // 변경전 dir = 2;
                 }
             }
+            if (ball.y >= CANVAS_HEIGHT - BALL_HEIGHT) {
+                isGameFinish =true;
+                timer.stop();
+            }
            
         }
 
@@ -257,10 +287,12 @@ class BlockGame2 {
                     if (duplRect(ballRect, blockRect)) {
 
                         block.isHidden =true;
-                        
+                        // 점수 시스템
+                        // 점수는 블록의 행에 따라 다르게 부여(위쪽 블록일수록 점수가 높음)
                         int rowScore = (BLOCK_ROWS - i) * 10;
                         score += rowScore;
 
+                        // 공 충돌 방향 계산
                         Rectangle intersection = ballRect.intersection(blockRect);
                         if (intersection.width > intersection.height) {
                             ball.ballSpeedy *= -1;
