@@ -10,8 +10,9 @@ class BlockGame2 {
         // constant
         static int BALL_WIDTH = 15; // 값 변경
         static int BALL_HEIGHT = 15; // 값 변경
-        static int BLOCK_ROWS = 5;
-        static int BLOCK_COLUMNS = 10;
+        static int BLOCK_ROWS = 1;
+        static int BLOCK_COLUMNS = 1;
+        static int TOTAL_BLOCKS = BLOCK_ROWS * BLOCK_COLUMNS;
         static int BLOCK_WIDTH = 40;
         static int BLOCK_HEIGHT = 20;
         static int BLOCK_GAP = 3;
@@ -29,7 +30,10 @@ class BlockGame2 {
         static Ball ball = new Ball();
         static int barXTarget = bar.x;
         static int dir = new Random().nextInt(4);
+        static int destroyedBlockCount = 0;
+        static int clearStack = 0; //클리어 스택 --> 클리어마다 1씩 증가, 제약 중첩
         static boolean isGameFinish = false; // 김민서
+        static boolean isClear = false; //클리어 판정용 변수
         static boolean isLeftPressed = false;
         static boolean isRightPressed = false;
 
@@ -80,6 +84,13 @@ class BlockGame2 {
         }
 
         static class MyPanel extends JPanel { // CANAVAS for Draw!
+
+            private void drawMidText(Graphics2D g2d, String text, int center, int y) { //텍스트 중앙 정렬
+                FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
+                int textWidth = metrics.stringWidth(text);
+                g2d.drawString(text, center - textWidth / 2, y);
+}
+
             public MyPanel() {
                 this.setSize(CANVAS_WIDTH, CANVAS_HEIGHT);
                 this.setBackground(Color.BLACK);
@@ -123,7 +134,13 @@ class BlockGame2 {
                 g2d.fillRect(bar.x, bar.y, bar.width, bar.height);
                 if (isGameFinish) {
                     g2d.setColor(Color.RED);
-                    g2d.drawString("Game Finished!", CANVAS_WIDTH / 2 - 55, 50);
+                    if (isClear) {
+                        drawMidText(g2d, "Clear!", CANVAS_WIDTH / 2, 50);
+                        drawMidText(g2d, "Press SPACE to continue", CANVAS_WIDTH / 2, 80);
+                    } else {
+                        drawMidText(g2d, "Game Over!", CANVAS_WIDTH / 2, 50);
+                        drawMidText(g2d, "Press SPACE to restart", CANVAS_WIDTH / 2, 80);
+                    }
                 } // 김민서
             }
         }
@@ -201,7 +218,7 @@ class BlockGame2 {
                     }
                 }
 
-                // 키 헤제시 막대기 멈춤춤
+                // 키 헤제시 막대기 멈춤
                 @Override
                 public void keyReleased(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -210,28 +227,33 @@ class BlockGame2 {
                     } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                         isRightPressed = false;
                         System.out.println("released Right Key");
+                    } else if (e.getKeyCode() == KeyEvent.VK_SPACE) { //키보드 조작 게임이므로 재시작 조건을 스페이스로 변경함
+                        if (isGameFinish) {
+                            restartGame();
+                        }
                     }
                 }
             });
 
             // 마우스 클릭시 재시작
-            myPanel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (isGameFinish && SwingUtilities.isLeftMouseButton(e)) {
-                        restartGame();
-                    }
-                }
-            });
+            // myPanel.addMouseListener(new MouseAdapter() {
+            //     @Override
+            //     public void mousePressed(MouseEvent e) {
+            //         if (isGameFinish && SwingUtilities.isLeftMouseButton(e)) {
+            //             restartGame();
+            //         }
+            //     }
+            // });
         }
         public void restartGame() {
             isGameFinish = false;
+            isClear = false;
             score = 0; // 점수 초기화
             initData(); // 블록 초기화
 
             // 막대기 초기화
-            bar.x = CANVAS_WIDTH / 2 - BAR_WIDTH / 2; 
-            bar.y = CANVAS_HEIGHT - 100; 
+            bar.x = CANVAS_WIDTH / 2 - BAR_WIDTH / 2;
+            bar.y = CANVAS_HEIGHT - 100;
             barXTarget = bar.x;
             // 공 초기화
             ball.x = CANVAS_WIDTH / 2 - BALL_WIDTH / 2;
@@ -239,6 +261,15 @@ class BlockGame2 {
             ball.ballSpeedx = 5;
             ball.ballSpeedy = -5;
             timer.start();
+        }
+
+        public static void checkClear() {
+            if (destroyedBlockCount == TOTAL_BLOCKS) { //파괴한 블록수와 총 블록수가 같아지면면
+                isGameFinish = true;
+                isClear = true;
+                clearStack += 1;
+                timer.stop();
+            }
         }
 
         public void startTimer() {
@@ -291,7 +322,7 @@ class BlockGame2 {
                 isGameFinish =true;
                 timer.stop();
             }
-           
+
         }
 
         public void checkCollisionBlock() {
@@ -307,6 +338,8 @@ class BlockGame2 {
                     if (duplRect(ballRect, blockRect)) {
 
                         block.isHidden =true;
+                        destroyedBlockCount += 1;
+                        checkClear();
                         // 점수 시스템
                         // 점수는 블록의 행에 따라 다르게 부여(위쪽 블록일수록 점수가 높음)
                         int rowScore = (BLOCK_ROWS - i) * 10;
@@ -327,7 +360,12 @@ class BlockGame2 {
             }
 
         }
-    
+
+
+
+
+
+
 
     public static void main(String[] args) {
         System.out.println("main 시작됨");
