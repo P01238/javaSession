@@ -199,9 +199,9 @@ class BlockGame2 {
 
                         System.out.println("pressed Left Key");
 
-                        if (bar.x - 20 >= 0) {
+                        if (bar.x - 30 >= 0) {
 
-                            barXTarget = bar.x - 20;
+                            barXTarget = bar.x - 30;
 
                         }
 
@@ -212,9 +212,9 @@ class BlockGame2 {
 
                         System.out.println("pressed Right Key");
 
-                        if (bar.x + BAR_WIDTH + 20 <= CANVAS_WIDTH) {
+                        if (bar.x + BAR_WIDTH + 30 <= CANVAS_WIDTH) {
 
-                            barXTarget = bar.x + 20;
+                            barXTarget = bar.x + 30;
 
                         }
                     }
@@ -259,7 +259,7 @@ class BlockGame2 {
             barXTarget = bar.x;
             // 공 초기화
             ball.x = CANVAS_WIDTH / 2 - BALL_WIDTH / 2;
-            ball.y = CANVAS_HEIGHT / 2 - BALL_HEIGHT / 2;
+            ball.y = CANVAS_HEIGHT / 3 - BALL_HEIGHT / 2;
             ball.ballSpeedx = 5;
             ball.ballSpeedy = -5;
 
@@ -325,21 +325,33 @@ class BlockGame2 {
         }// 김민서
 
         void checkCollision() {
+
+            Random rand = new Random();
+            int tweak = rand.nextInt(3) - 1; // -1, 0, 1 중 랜덤
+
             // 위/아래 벽 충돌 → y축 반전
-            if (ball.y <= 0 || ball.y >= CANVAS_HEIGHT - BALL_HEIGHT) {
+            if (ball.y <= 0) {
                 ball.ballSpeedy *= -1;
+                ball.ballSpeedy += tweak; //미세한 각도 변화
+                ball.y = 1; // 위쪽 보정
             }
-
             // 좌우 벽 충돌 → x축 반전
-            if (ball.x <= 0 || ball.x >= CANVAS_WIDTH - BALL_WIDTH) {
+            if (ball.x <= 0) {
                 ball.ballSpeedx *= -1;
-            }
+                ball.ballSpeedx += tweak;
+                ball.x = 1; // 왼쪽 벽에서 튕겼을 때 위치 보정
+            } else if (ball.x >= CANVAS_WIDTH - BALL_WIDTH) {
+                ball.ballSpeedx *= -1;
+                ball.ballSpeedx += tweak;
+                ball.x = CANVAS_WIDTH - BALL_WIDTH - 1; // 오른쪽 벽에서 튕겼을 때 위치 보정
 
+            }
             // 김민서 -> 막대기 충돌버젼에서 (김태현 수정) 오류사유 dir 사용( 현재 필요없는 부분)
             if (ball.getBottomCenter().y >= bar.y) {
                 if (duplRect(new Rectangle(ball.x, ball.y, ball.width, ball.height),
                         new Rectangle(bar.x, bar.y, bar.width, bar.height))) {
                     ball.ballSpeedy *= -1; // 변경전 dir = 2;
+                    ball.y = bar.y - ball.height - 1; //끼임 방지를 위한 위치 보정
                 }
             }
             if (ball.y >= CANVAS_HEIGHT - BALL_HEIGHT) {
