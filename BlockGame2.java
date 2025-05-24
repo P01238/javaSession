@@ -180,6 +180,8 @@ class BlockGame2 {
                     blocks[i][j].isHidden = false;
                 }
             }
+            TOTAL_BLOCKS = BLOCK_COLUMNS * BLOCK_ROWS;
+            destroyedBlockCount = 0;
         }
 
         public void setKeyListener() {
@@ -260,16 +262,38 @@ class BlockGame2 {
             ball.y = CANVAS_HEIGHT / 2 - BALL_HEIGHT / 2;
             ball.ballSpeedx = 5;
             ball.ballSpeedy = -5;
+
+            int speedX = 5;
+            int speedY = -5;
+            int barWidth = BAR_WIDTH;
+
+            if (clearStack >= 1) {
+                speedX = 7;
+                speedY = -7;
+            }
+            if (clearStack >= 2) {
+                barWidth = BAR_WIDTH - 20;
+            }
+
+
+            if (barWidth < 30) barWidth = 30;
+
+            ball.ballSpeedx = speedX;
+            ball.ballSpeedy = speedY;
+            bar.width = barWidth;
+
             timer.start();
         }
 
         public static void checkClear() {
-            if (destroyedBlockCount == TOTAL_BLOCKS) { //파괴한 블록수와 총 블록수가 같아지면면
+
+            if (destroyedBlockCount == TOTAL_BLOCKS) { //파괴한 블록수와 총 블록수가 같아지면
                 isGameFinish = true;
                 isClear = true;
                 clearStack += 1;
                 timer.stop();
             }
+
         }
 
         public void startTimer() {
