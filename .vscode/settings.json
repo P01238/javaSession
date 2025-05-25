@@ -1,0 +1,9 @@
+{
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-24",
+      "path": "/Users/gimminseo/jdk-24.0.1.jdk/Contents/Home",
+      "default": true
+    }
+  ]
+}

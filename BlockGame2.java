@@ -5,6 +5,9 @@ import javax.swing.*;
 import java.util.Random;
 
 class BlockGame2 {
+    public static void BlockGame(String[] args){
+    System.out.println("main 시작됨");
+}
     static class MyFrame extends JFrame {
 
         // constant
@@ -265,8 +268,6 @@ class BlockGame2 {
                 clearStack = 0;
             }
             // 이전 상태 저장
-            double prevSpeedX = ball.ballSpeedx;
-            double prevSpeedY = ball.ballSpeedy;
             double prevBaseSpeed = baseSpeed;
             int prevBarWidth = bar.width;
             isClear = false;
@@ -451,7 +452,7 @@ class BlockGame2 {
             }
 
         }
-        public class ScoreManager { // 점수 차등분배(김민서)
+        public class ScoreManager { // 점수 차등분배
     private int score = 0;
     private int comboCount = 0;
     private long previousHitTime = 0;
