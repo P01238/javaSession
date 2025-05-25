@@ -281,7 +281,7 @@ class BlockGame2 {
             barXTarget = bar.x;
             // 공 초기화
             ball.x = CANVAS_WIDTH / 2 - BALL_WIDTH / 2;
-            ball.y = CANVAS_HEIGHT / 2 + 100; // 시작 시 공 위치 변화
+            ball.y = CANVAS_HEIGHT / 2; // 시작 시 공 위치 변화
             ball.ballSpeedx = 6;
             ball.ballSpeedy = -6;
             baseSpeed = Math.sqrt(72);
