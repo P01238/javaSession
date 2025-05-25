@@ -451,41 +451,12 @@ class BlockGame2 {
             }
 
         }
-        public class ScoreManager { // 점수 차등분배(김민서)
-    private int score = 0;
-    private int comboCount = 0;
-    private long previousHitTime = 0;
 
-    public void addBlockScore(int rowIndex, int totalRows, long blockGeneratedTime) {
-        long now = System.currentTimeMillis();
-        long elapsed = now - blockGeneratedTime;
 
-        double multiplier = (elapsed < 5000) ? 1.5 :
-                            (elapsed < 10000) ? 1.2 : 1.0;
 
-        int rowScore = (totalRows - rowIndex) * 10;
-        score += (int)(rowScore * multiplier);
 
-        if (previousHitTime > 0 && (now - previousHitTime) < 2000) {
-            comboCount++;
-            score += comboCount * 10;
-        } else {
-            comboCount = 1;
-        }
 
-        previousHitTime = now;
-    }
 
-    public int getScore() {
-        return score;
-    }
-
-    public void reset() {
-        score = 0;
-        comboCount = 0;
-        previousHitTime = 0;
-    }
-}
 
     public static void main(String[] args) {
         System.out.println("main 시작됨");
