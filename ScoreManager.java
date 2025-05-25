@@ -5,8 +5,9 @@ import javax.swing.*;
 import java.util.Random;
 
 class BlockGame2 {
-    public static void BlockGame(String[] args){
+    public static void main(String[] args){
     System.out.println("main 시작됨");
+    new MyFrame("BlockGame"); 
 }
     static class MyFrame extends JFrame {
 
@@ -14,8 +15,8 @@ class BlockGame2 {
         static Image backgroundImage; // qoru
         static int BALL_WIDTH = 15; // 값 변경
         static int BALL_HEIGHT = 15; // 값 변경
-        static int BLOCK_ROWS = 5;
-        static int BLOCK_COLUMNS = 10;
+        static int BLOCK_ROWS = 1;
+        static int BLOCK_COLUMNS = 1;
         static int TOTAL_BLOCKS = BLOCK_ROWS * BLOCK_COLUMNS;
         static int BLOCK_WIDTH = 40;
         static int BLOCK_HEIGHT = 20;
@@ -295,7 +296,7 @@ class BlockGame2 {
             // 공 초기화
             ball.x = CANVAS_WIDTH / 2 - BALL_WIDTH / 2;
             ball.y = CANVAS_HEIGHT / 2; // 시작 시 공 위치 변화
-            ball.ballSpeedx = 6;
+            ball.ballSpeedx = 6; 
             ball.ballSpeedy = -6;
             baseSpeed = Math.sqrt(72);
 
@@ -321,9 +322,6 @@ class BlockGame2 {
                     infoTextStartTime = System.currentTimeMillis(); // 정보 텍스트 시작 시간 기록
                 }
             }
-
-
-
             if (barWidth < 30) barWidth = 30;
 
             ball.ballSpeedx = speedX;
@@ -351,6 +349,40 @@ class BlockGame2 {
                 clearStack += 1;
                 timer.stop();
             }
+            if(clearStack == 3){
+                showEndDialog();
+            }
+        }
+
+    
+        public static void showEndDialog(){
+            String message = "게임 종료!\n총점: "+score +"\n다시 시작하시겠습니까?";
+            
+            JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(myPanel);
+
+            int option = JOptionPane.showConfirmDialog(
+        null,
+        message,
+        "게임 종료",
+        JOptionPane.YES_NO_OPTION
+    );
+    
+       switch (option) {
+        case JOptionPane.YES_OPTION: // 또는 case 0:
+            currentFrame.dispose(); // 기존 창 닫기
+            new MyFrame("BlockGame"); // 새 창 띄우기
+            break;
+
+        case JOptionPane.NO_OPTION: // 또는 case 1:
+        case JOptionPane.CLOSED_OPTION: // 창 닫힘 처리까지 포함
+            System.exit(0); // 프로그램 종료
+            break;
+
+        default:
+            // 예외 상황 대비 (필수는 아님)
+            System.err.println("Unknown option selected: " + option);
+            break;
+    }
 
         }
 
@@ -443,10 +475,6 @@ class BlockGame2 {
                         block.isHidden =true;
                         destroyedBlockCount += 1;
                         checkClear();
-                        // 점수 시스템
-                        // 점수는 블록의 행에 따라 다르게 부여(위쪽 블록일수록 점수가 높음)
-                        int rowScore = (BLOCK_ROWS - i) * 10;
-                        score += rowScore;
 
                         // 공 충돌 방향 계산
                         Rectangle intersection = ballRect.intersection(blockRect);
@@ -464,7 +492,7 @@ class BlockGame2 {
             }
 
         }
-        public class ScoreManager { // 점수 차등분배
+        public static class ScoreManager { // 점수 차등분배
     private int score = 0;
     private int comboCount = 0;
     private long previousHitTime = 0;
@@ -499,9 +527,4 @@ class BlockGame2 {
         previousHitTime = 0;
     }
 }
-
-    public static void main(String[] args) {
-        System.out.println("main 시작됨");
-        new MyFrame("BlockGame");
-    }
 }
