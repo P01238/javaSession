@@ -11,6 +11,7 @@ class BlockGame2 {
     static class MyFrame extends JFrame {
 
         // constant
+        static Image backgroundImage; // qoru
         static int BALL_WIDTH = 15; // 값 변경
         static int BALL_HEIGHT = 15; // 값 변경
         static int BLOCK_ROWS = 5;
@@ -88,7 +89,7 @@ class BlockGame2 {
         }
 
         static class MyPanel extends JPanel { // CANAVAS for Draw!
-
+            static Image[] backgroundImages;
             private void drawMidText(Graphics2D g2d, String text, int center, int y) { //텍스트 중앙 정렬
                 FontMetrics metrics = g2d.getFontMetrics(g2d.getFont());
                 int textWidth = metrics.stringWidth(text);
@@ -99,11 +100,22 @@ class BlockGame2 {
                 this.setSize(CANVAS_WIDTH, CANVAS_HEIGHT);
                 this.setBackground(Color.BLACK);
             }
+            static {
+    // static 초기화 블록에서 미리 로딩
+    backgroundImages = new Image[] { //레벨에 따라 이미지 변화
+        new ImageIcon("assets/1.jpg").getImage(),
+        new ImageIcon("assets/2.jpg").getImage(),
+        new ImageIcon("assets/3.jpg").getImage()
+    };
+}
 
             @Override
             public void paint(Graphics g) {
                 super.paint(g);
                 Graphics2D g2d = (Graphics2D) g;
+                int levelIndex = Math.min(clearStack, backgroundImages.length - 1);
+    			Image backgroundImage = backgroundImages[levelIndex];
+				g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 drawUI(g2d);
             }
 
@@ -190,7 +202,7 @@ class BlockGame2 {
                     blocks[i][j].y = 100 + BLOCK_HEIGHT * i + BLOCK_GAP * i;
                     blocks[i][j].width = BLOCK_WIDTH;
                     blocks[i][j].height = BLOCK_HEIGHT;
-                    blocks[i][j].color = 4 - i;// 0:white 1:yellow 2:blue 3:mazanta 4:red
+                    blocks[i][j].color = 0;// 0:white 1:yellow 2:blue 3:mazanta 4:red
                     blocks[i][j].isHidden = false;
                 }
             }
