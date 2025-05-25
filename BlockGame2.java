@@ -250,6 +250,7 @@ class BlockGame2 {
             isGameFinish = false;
             if (isClear == false) { //클리어가 아니라면 점수 초기화
                 score = 0;
+                clearStack = 0;
             }
             isClear = false;
             initData(); // 블록 초기화
