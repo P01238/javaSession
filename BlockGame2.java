@@ -10,8 +10,8 @@ class BlockGame2 {
         // constant
         static int BALL_WIDTH = 15; // 값 변경
         static int BALL_HEIGHT = 15; // 값 변경
-        static int BLOCK_ROWS = 1;
-        static int BLOCK_COLUMNS = 1;
+        static int BLOCK_ROWS = 5;
+        static int BLOCK_COLUMNS = 10;
         static int TOTAL_BLOCKS = BLOCK_ROWS * BLOCK_COLUMNS;
         static int BLOCK_WIDTH = 40;
         static int BLOCK_HEIGHT = 20;
@@ -354,6 +354,9 @@ class BlockGame2 {
                     ball.y = bar.y - ball.height - 1; //끼임 방지를 위한 위치 보정
                 }
             }
+            ball.ballSpeedx = Math.max(-10, Math.min(ball.ballSpeedx, 10)); //공이 너무 빨라지지 않도록 속도 보정
+            ball.ballSpeedy = Math.max(-10, Math.min(ball.ballSpeedy, 10));
+
             if (ball.y >= CANVAS_HEIGHT - BALL_HEIGHT) {
                 isGameFinish =true;
                 timer.stop();
