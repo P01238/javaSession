@@ -128,7 +128,7 @@ class BlockGame2 {
                 // draw score
                 g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
-                drawMidText(g2d, "score :" +String.valueOf(score), CANVAS_WIDTH / 2, 20);
+                drawMidText(g2d, "level : "+ String.valueOf(clearStack+1) +"    score : " +String.valueOf(score), CANVAS_WIDTH / 2, 20);
                 // draw info text
                 if (!infoText.equals("")) {
                     long elapsed = System.currentTimeMillis() - infoTextStartTime;
