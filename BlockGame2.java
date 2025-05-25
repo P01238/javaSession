@@ -123,8 +123,7 @@ class BlockGame2 {
                 // draw score
                 g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
-                g2d.drawString("score: " + score, CANVAS_WIDTH / 2 - 30, 20);
-
+                drawMidText(g2d, "score :" +String.valueOf(score), CANVAS_WIDTH / 2, 20);
                 // draw Ball
                 g2d.setColor(Color.WHITE);
                 g2d.fillOval(ball.x, ball.y, BALL_WIDTH, BALL_HEIGHT);
@@ -249,8 +248,10 @@ class BlockGame2 {
         }
         public void restartGame() {
             isGameFinish = false;
+            if (isClear == false) { //클리어가 아니라면 점수 초기화
+                score = 0;
+            }
             isClear = false;
-            score = 0; // 점수 초기화
             initData(); // 블록 초기화
 
             // 막대기 초기화
