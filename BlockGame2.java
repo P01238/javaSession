@@ -10,8 +10,8 @@ class BlockGame2 {
         // constant
         static int BALL_WIDTH = 15; // 값 변경
         static int BALL_HEIGHT = 15; // 값 변경
-        static int BLOCK_ROWS = 5;
-        static int BLOCK_COLUMNS = 10;
+        static int BLOCK_ROWS = 1;
+        static int BLOCK_COLUMNS = 1;
         static int TOTAL_BLOCKS = BLOCK_ROWS * BLOCK_COLUMNS;
         static int BLOCK_WIDTH = 40;
         static int BLOCK_HEIGHT = 20;
@@ -32,6 +32,7 @@ class BlockGame2 {
         static int dir = new Random().nextInt(4);
         static int destroyedBlockCount = 0;
         static int clearStack = 0; //클리어 스택 --> 클리어마다 1씩 증가, 제약 중첩
+        static double baseSpeed = Math.sqrt(72);
         static boolean isGameFinish = false; // 김민서
         static boolean isClear = false; //클리어 판정용 변수
         static boolean isLeftPressed = false;
@@ -42,8 +43,8 @@ class BlockGame2 {
             int y = CANVAS_HEIGHT / 2 - BALL_HEIGHT / 2;
             int width = BALL_WIDTH;
             int height = BALL_HEIGHT;
-            int ballSpeedx = 6;
-            int ballSpeedy = -6;
+            double ballSpeedx = 6;
+            double ballSpeedy = -6;
 
             Point getCenter() {
                 return new Point(x + (BALL_WIDTH / 2), y + (BALL_HEIGHT / 2));
@@ -131,6 +132,7 @@ class BlockGame2 {
                 // draw Bar
                 g2d.setColor(Color.WHITE);
                 g2d.fillRect(bar.x, bar.y, bar.width, bar.height);
+
                 if (isGameFinish) {
                     g2d.setColor(Color.RED);
                     if (isClear) {
@@ -264,18 +266,22 @@ class BlockGame2 {
             ball.y = CANVAS_HEIGHT / 3 - BALL_HEIGHT / 2;
             ball.ballSpeedx = 6;
             ball.ballSpeedy = -6;
+            baseSpeed = Math.sqrt(72);
 
             int speedX = 6;
             int speedY = -6;
             int barWidth = BAR_WIDTH;
+            
 
             if (clearStack >= 1) {
                 speedX = 8;
                 speedY = -8;
+                baseSpeed = Math.sqrt(128);
             }
             if (clearStack >= 2) {
                 barWidth = BAR_WIDTH - 20;
             }
+
 
 
             if (barWidth < 30) barWidth = 30;
@@ -283,6 +289,7 @@ class BlockGame2 {
             ball.ballSpeedx = speedX;
             ball.ballSpeedy = speedY;
             bar.width = barWidth;
+            normalizeSpeed();
 
             timer.start();
         }
@@ -311,14 +318,21 @@ class BlockGame2 {
             timer.start();
         }
 
+        void normalizeSpeed() {
+            double speed = Math.sqrt(ball.ballSpeedx * ball.ballSpeedx + ball.ballSpeedy * ball.ballSpeedy);
+            ball.ballSpeedx = ball.ballSpeedx / speed * baseSpeed;
+            ball.ballSpeedy = ball.ballSpeedy / speed * baseSpeed;
+        }
+
+
         void movement() {
             if (isLeftPressed && bar.x > 0) {
                 bar.x -= 9;
             } else if (isRightPressed && bar.x + bar.width < CANVAS_WIDTH) {
                 bar.x += 9;
             }
-            ball.x += ball.ballSpeedx;
-            ball.y -= ball.ballSpeedy;
+            ball.x += (int)ball.ballSpeedx;
+            ball.y -= (int)ball.ballSpeedy;
 
         }
 
@@ -356,8 +370,7 @@ class BlockGame2 {
                     ball.y = bar.y - ball.height - 1; //끼임 방지를 위한 위치 보정
                 }
             }
-            ball.ballSpeedx = Math.max(-10, Math.min(ball.ballSpeedx, 10)); //공이 너무 빨라지지 않도록 속도 보정
-            ball.ballSpeedy = Math.max(-10, Math.min(ball.ballSpeedy, 10));
+            normalizeSpeed();
 
             if (ball.y >= CANVAS_HEIGHT - BALL_HEIGHT) {
                 isGameFinish =true;
@@ -393,6 +406,7 @@ class BlockGame2 {
                         } else{
                             ball.ballSpeedx *= -1;
                         }
+                        normalizeSpeed();
 
                         return;
                         }
