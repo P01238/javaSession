@@ -42,8 +42,8 @@ class BlockGame2 {
             int y = CANVAS_HEIGHT / 2 - BALL_HEIGHT / 2;
             int width = BALL_WIDTH;
             int height = BALL_HEIGHT;
-            int ballSpeedx = 5;
-            int ballSpeedy = -5;
+            int ballSpeedx = 6;
+            int ballSpeedy = -6;
 
             Point getCenter() {
                 return new Point(x + (BALL_WIDTH / 2), y + (BALL_HEIGHT / 2));
@@ -260,16 +260,16 @@ class BlockGame2 {
             // 공 초기화
             ball.x = CANVAS_WIDTH / 2 - BALL_WIDTH / 2;
             ball.y = CANVAS_HEIGHT / 3 - BALL_HEIGHT / 2;
-            ball.ballSpeedx = 5;
-            ball.ballSpeedy = -5;
+            ball.ballSpeedx = 6;
+            ball.ballSpeedy = -6;
 
-            int speedX = 5;
-            int speedY = -5;
+            int speedX = 6;
+            int speedY = -6;
             int barWidth = BAR_WIDTH;
 
             if (clearStack >= 1) {
-                speedX = 7;
-                speedY = -7;
+                speedX = 8;
+                speedY = -8;
             }
             if (clearStack >= 2) {
                 barWidth = BAR_WIDTH - 20;
@@ -311,9 +311,9 @@ class BlockGame2 {
 
         void movement() {
             if (isLeftPressed && bar.x > 0) {
-                bar.x -= 5;
+                bar.x -= 9;
             } else if (isRightPressed && bar.x + bar.width < CANVAS_WIDTH) {
-                bar.x += 5;
+                bar.x += 9;
             }
             ball.x += ball.ballSpeedx;
             ball.y -= ball.ballSpeedy;
