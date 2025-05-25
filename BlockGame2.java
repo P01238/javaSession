@@ -37,6 +37,10 @@ class BlockGame2 {
         static boolean isClear = false; //클리어 판정용 변수
         static boolean isLeftPressed = false;
         static boolean isRightPressed = false;
+        static String clearChangeMessage = "";
+        static String infoText = "";
+        static long infoTextStartTime = 0 ;
+        static final int INFO_DISPLAY_DURATION = 3000; // 정보 텍스트 표시 시간 (3초)
 
         static class Ball {
             int x = CANVAS_WIDTH / 2 - BALL_WIDTH / 2;
@@ -125,6 +129,16 @@ class BlockGame2 {
                 g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
                 drawMidText(g2d, "score :" +String.valueOf(score), CANVAS_WIDTH / 2, 20);
+                // draw info text
+                if (!infoText.equals("")) {
+                    long elapsed = System.currentTimeMillis() - infoTextStartTime;
+                    if (elapsed < INFO_DISPLAY_DURATION) {
+                    g2d.setColor(Color.WHITE);
+                    drawMidText(g2d, infoText, CANVAS_WIDTH / 2, 50);
+                    } else {
+                    infoText = "";
+                    }
+                }
                 // draw Ball
                 g2d.setColor(Color.WHITE);
                 g2d.fillOval(ball.x, ball.y, BALL_WIDTH, BALL_HEIGHT);
@@ -254,8 +268,16 @@ class BlockGame2 {
                 score = 0;
                 clearStack = 0;
             }
+            // 이전 상태 저장
+            double prevSpeedX = ball.ballSpeedx;
+            double prevSpeedY = ball.ballSpeedy;
+            double prevBaseSpeed = baseSpeed;
+            int prevBarWidth = bar.width;
             isClear = false;
             initData(); // 블록 초기화
+
+            
+            
 
             // 막대기 초기화
             bar.x = CANVAS_WIDTH / 2 - BAR_WIDTH / 2;
@@ -272,14 +294,23 @@ class BlockGame2 {
             int speedY = -6;
             int barWidth = BAR_WIDTH;
             
+            infoText = "";
 
             if (clearStack >= 1) {
                 speedX = 8;
                 speedY = -8;
                 baseSpeed = Math.sqrt(128);
+                infoText += "공 속도 증가!! ";
+                if (!infoText.equals("")) {
+                    infoTextStartTime = System.currentTimeMillis(); // 정보 텍스트 시작 시간 기록
+                }
             }
             if (clearStack >= 2) {
                 barWidth = BAR_WIDTH - 20;
+                infoText += "막대 길이 감소!! ";
+                if (!infoText.equals("")) {
+                    infoTextStartTime = System.currentTimeMillis(); // 정보 텍스트 시작 시간 기록
+                }
             }
 
 
@@ -290,6 +321,15 @@ class BlockGame2 {
             ball.ballSpeedy = speedY;
             bar.width = barWidth;
             normalizeSpeed();
+            
+
+            StringBuilder changes = new StringBuilder();
+            if (clearStack > 0) {
+                changes.append("Clear stage ").append(clearStack).append("!\n");
+                if (baseSpeed > prevBaseSpeed) changes.append("공 속도 증가!!.\n");
+                if (bar.width < prevBarWidth) changes.append("막대기 길이 감소!!. \n");
+            }
+            clearChangeMessage = changes.toString().trim();
 
             timer.start();
         }
