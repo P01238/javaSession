@@ -10,8 +10,8 @@ class BlockGame2 {
         // constant
         static int BALL_WIDTH = 15; // 값 변경
         static int BALL_HEIGHT = 15; // 값 변경
-        static int BLOCK_ROWS = 1;
-        static int BLOCK_COLUMNS = 1;
+        static int BLOCK_ROWS = 5;
+        static int BLOCK_COLUMNS = 10;
         static int TOTAL_BLOCKS = BLOCK_ROWS * BLOCK_COLUMNS;
         static int BLOCK_WIDTH = 40;
         static int BLOCK_HEIGHT = 20;
@@ -33,7 +33,7 @@ class BlockGame2 {
         static int destroyedBlockCount = 0;
         static int clearStack = 0; //클리어 스택 --> 클리어마다 1씩 증가, 제약 중첩
         static double baseSpeed = Math.sqrt(72);
-        static boolean isGameFinish = false; // 김민서
+        static boolean isGameFinish = false; 
         static boolean isClear = false; //클리어 판정용 변수
         static boolean isLeftPressed = false;
         static boolean isRightPressed = false;
@@ -52,23 +52,19 @@ class BlockGame2 {
 
             Point getCenter() {
                 return new Point(x + (BALL_WIDTH / 2), y + (BALL_HEIGHT / 2));
-            }// 김민서
-
+            }
             Point getBottomCenter() {
                 return new Point(x + (BALL_WIDTH / 2), y + (BALL_HEIGHT));
-            }// 김민서
-
+            }
             Point getTopCenter() {
                 return new Point(x + (BALL_WIDTH / 2), y);
-            }// 김민서
-
+            }
             Point getLeftCenter() {
                 return new Point(x, y + (BALL_HEIGHT / 2));
-            }// 김민서
-
+            }
             Point getRightCenter() {
                 return new Point(x + (BALL_WIDTH), y + (BALL_HEIGHT / 2));
-            }// 김민서
+            }
         }
 
         static class Bar {
@@ -84,7 +80,7 @@ class BlockGame2 {
             int width = BLOCK_WIDTH;
             int height = BLOCK_HEIGHT;
             int color = 0;// 0:white 1:yellow 2:blue 3:mazanta 4:red
-            boolean isHidden = false;// after collision, block will be hidden
+            boolean isHidden = false;
 
         }
 
