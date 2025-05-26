@@ -19,8 +19,8 @@ class BlockGame2 {
         static Image backgroundImage; // qoru
         static int BALL_WIDTH = 15; // 값 변경
         static int BALL_HEIGHT = 15; // 값 변경
-        static int BLOCK_ROWS = 1;
-        static int BLOCK_COLUMNS = 1;
+        static int BLOCK_ROWS = 5;
+        static int BLOCK_COLUMNS = 10;
         static int TOTAL_BLOCKS = BLOCK_ROWS * BLOCK_COLUMNS;
         static int BLOCK_WIDTH = 40;
         static int BLOCK_HEIGHT = 20;
@@ -353,7 +353,7 @@ class BlockGame2 {
             timer.start();
         }
 
-        public static void checkClear() {
+        public void checkClear() {
 
             if (destroyedBlockCount == TOTAL_BLOCKS) { // 파괴한 블록수와 총 블록수가 같아지면
                 isGameFinish = true;
@@ -373,7 +373,7 @@ class BlockGame2 {
                 MyFrame.class.getResource("/assets/3.wav")
         };
 
-        public static void showEndDialog() {
+        public void showEndDialog() {
             bgmPlayer.stop();
             String message = "게임 종료!\n총점: " + score + "\n다시 시작하시겠습니까?";
 
@@ -387,8 +387,8 @@ class BlockGame2 {
 
             switch (option) {
                 case JOptionPane.YES_OPTION: // 또는 case 0:
-                    currentFrame.dispose(); // 기존 창 닫기
-                    new MyFrame("BlockGame"); // 새 창 띄우기
+                    isClear = false;
+                    restartGame();
                     break;
 
                 case JOptionPane.NO_OPTION: // 또는 case 1:
