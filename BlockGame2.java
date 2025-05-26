@@ -18,8 +18,8 @@ class BlockGame2 {
         static Image backgroundImage; // qoru
         static int BALL_WIDTH = 15; // 값 변경
         static int BALL_HEIGHT = 15; // 값 변경
-        static int BLOCK_ROWS = 1;
-        static int BLOCK_COLUMNS = 1;
+        static int BLOCK_ROWS = 5;
+        static int BLOCK_COLUMNS = 10;
         static int TOTAL_BLOCKS = BLOCK_ROWS * BLOCK_COLUMNS;
         static int BLOCK_WIDTH = 40;
         static int BLOCK_HEIGHT = 20;
@@ -577,3 +577,4 @@ class BlockGame2 {
     }
 
 }
+
