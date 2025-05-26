@@ -147,7 +147,8 @@ class BlockGame2 {
                 // draw score
                 g2d.setColor(Color.WHITE);
                 g2d.setFont(new Font("TimesRoman", Font.BOLD, 20));
-                drawMidText(g2d, "level : " + String.valueOf(clearStack + 1) + "    score : " + String.valueOf(score),
+                drawMidText(g2d, "level : " + String.valueOf(clearStack + 1) + "    score : " + String.valueOf(score)
+                + "    high score : " + scoreManager.getHighScore(),
                         CANVAS_WIDTH / 2, 20);
                 // draw info text
                 if (!infoText.equals("")) {
@@ -531,6 +532,7 @@ class BlockGame2 {
         private int score = 0;
         private int comboCount = 0;
         private long previousHitTime = 0;
+        private int highScore = 0;
 
         public void addBlockScore(int rowIndex, int totalRows, long blockGeneratedTime) {
             long now = System.currentTimeMillis();
@@ -549,10 +551,20 @@ class BlockGame2 {
             }
 
             previousHitTime = now;
+
+            // 최고 점수 갱신
+            if (score > highScore) {
+                highScore = score;
+            }
+            
         }
 
         public int getScore() {
             return score;
+        }
+
+        public int getHighScore() {
+            return highScore;
         }
 
         public void reset() {
