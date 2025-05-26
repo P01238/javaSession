@@ -3,7 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.sound.sampled.*;
 import java.io.File;
-
+import java.net.URL;
 import java.util.Random;
 
 class BlockGame2 {
@@ -15,11 +15,12 @@ class BlockGame2 {
     static class MyFrame extends JFrame {
 
         // constant
+        static ScoreManager scoreManager = new ScoreManager();
         static Image backgroundImage; // qoru
         static int BALL_WIDTH = 15; // 값 변경
         static int BALL_HEIGHT = 15; // 값 변경
-        static int BLOCK_ROWS = 5;
-        static int BLOCK_COLUMNS = 10;
+        static int BLOCK_ROWS = 1;
+        static int BLOCK_COLUMNS = 1;
         static int TOTAL_BLOCKS = BLOCK_ROWS * BLOCK_COLUMNS;
         static int BLOCK_WIDTH = 40;
         static int BLOCK_HEIGHT = 20;
@@ -112,11 +113,12 @@ class BlockGame2 {
 
             static {
                 // static 초기화 블록에서 미리 로딩
-                backgroundImages = new Image[] { // 레벨에 따라 이미지 변화
-                        new ImageIcon("assets/1.jpg").getImage(),
-                        new ImageIcon("assets/2.jpg").getImage(),
-                        new ImageIcon("assets/3.jpg").getImage()
+                backgroundImages = new Image[] {
+                        new ImageIcon(MyPanel.class.getResource("/assets/1.jpg")).getImage(),
+                        new ImageIcon(MyPanel.class.getResource("/assets/2.jpg")).getImage(),
+                        new ImageIcon(MyPanel.class.getResource("/assets/3.jpg")).getImage()
                 };
+
             }
 
             @Override
@@ -199,7 +201,8 @@ class BlockGame2 {
             startTimer();
 
             this.setVisible(true);
-            bgmPlayer.play(bgms[0], true);
+            bgmPlayer.play("assets/1.wav", true);
+
         }
 
         public void initData() {
@@ -288,6 +291,7 @@ class BlockGame2 {
             if (isClear == false) { // 클리어가 아니라면 점수 초기화
                 score = 0;
                 clearStack = 0;
+                scoreManager.reset();
             }
             // 이전 상태 저장
             double prevBaseSpeed = baseSpeed;
@@ -363,10 +367,10 @@ class BlockGame2 {
         }
 
         static BGMPlayer bgmPlayer = new BGMPlayer();
-        static String[] bgms = {
-                "assets/1.wav",
-                "assets/2.wav",
-                "assets/3.wav"
+        static URL[] bgms = {
+                MyFrame.class.getResource("/assets/1.wav"),
+                MyFrame.class.getResource("/assets/2.wav"),
+                MyFrame.class.getResource("/assets/3.wav")
         };
 
         public static void showEndDialog() {
@@ -486,16 +490,24 @@ class BlockGame2 {
 
                     if (duplRect(ballRect, blockRect)) {
                         try {
-                            AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("assets/4.wav"));
+                            AudioInputStream audioInput = AudioSystem.getAudioInputStream(
+                                    getClass().getClassLoader().getResource("assets/4.wav"));
                             Clip clip = AudioSystem.getClip();
                             clip.open(audioInput);
-                            clip.start(); // 효과음은 반복 없이 한 번만 재생
+                            clip.start();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
 
                         block.isHidden = true;
                         destroyedBlockCount += 1;
+
+                        
+                        scoreManager.addBlockScore(i, BLOCK_ROWS, System.currentTimeMillis()); // i는 row index
+                        score = scoreManager.getScore(); // 점수를 MyFrame.score에 반영
+
+                        scoreManager.addBlockScore(i, BLOCK_ROWS, System.currentTimeMillis());
+                        score = scoreManager.getScore();
                         checkClear();
 
                         // 공 충돌 방향 계산
@@ -515,7 +527,7 @@ class BlockGame2 {
 
     }
 
-    public static class ScoreManager { // 점수 차등분배
+    static class ScoreManager { // 점수 차등분배
         private int score = 0;
         private int comboCount = 0;
         private long previousHitTime = 0;
@@ -553,6 +565,21 @@ class BlockGame2 {
     static class BGMPlayer { // 배경음악
         private Clip clip;
 
+        public void play(URL url, boolean loop) {
+            stop(); // 기존 음악 정지
+            try {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(url);
+                clip = AudioSystem.getClip();
+                clip.open(audioInput);
+                if (loop)
+                    clip.loop(Clip.LOOP_CONTINUOUSLY);
+                else
+                    clip.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         public void play(String filepath, boolean loop) {
             stop(); // 기존 음악 정지
             try {
@@ -577,4 +604,3 @@ class BlockGame2 {
     }
 
 }
-
